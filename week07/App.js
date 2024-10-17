@@ -11,9 +11,57 @@ import {
   FlatList,
   tasks,
   renderTask,
+  styles
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const DATA = [
+  {
+    id: 'task01',
+    title: 'To check email',
+  },
+  {
+    id: 'task01',
+    title: 'UI task web page',
+  },
+  {
+    id: 'task01',
+    title: 'Lean javascript basic',
+  },
+  {
+    id: 'task01',
+    title: 'Lean HTML Advance',
+  },
+  {
+    id: 'task01',
+    title: 'Medical App UI',
+  },
+  {
+    id: 'task01',
+    title: 'Learn java',
+  },
+];
+
+
+
+type ItemProps = {title: string};
+ 
+
+
+const Item = ({title}: ItemProps) => (
+  
+  <View style={{marginVertical:10, backgroundColor:"gray", padding:10, borderRadius:30}}>
+    <View style={{justifyContent: 'space-between', flexDirection:"row", }}>
+      <View style={{ width:250 , flexDirection:'row'}}>
+         <CheckBox
+          style={{alignSelf: 'center',marginRight:20, borderColor:'green'}}
+        />
+        <Text style={{fontWeight:'bold', fontSize:20}}>{title.title}</Text>    
+      </View>
+    </View>
+  </View>
+);
 
 function Screen1({ navigation }) {
   return (
@@ -122,9 +170,9 @@ function Screen2({ navigation }) {
       />
 
       <FlatList
-        data={tasks}
-        renderItem={renderTask}
-        keyExtractor={(item) => item.id}
+        data={DATA}
+        renderItem={({item}) => <Item title={item} />}
+        keyExtractor={item => item.id}
       />
 
       <TouchableOpacity
@@ -141,7 +189,7 @@ function Screen2({ navigation }) {
           marginHorizontal: 120,
         }}
         onPress={() => navigation.navigate('Screen3')}>
-        <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
+        <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>
           +
         </Text>
       </TouchableOpacity>
@@ -220,48 +268,9 @@ function Screen3({ navigation }) {
 const Stack = createNativeStackNavigator();
 
 function App() {
-  const [tasks, setTasks] = useState([
-    { id: '1', text: 'To check email', completed: true },
-    { id: '2', text: 'UI task web page', completed: true },
-    { id: '3', text: 'Learn javascript basic', completed: true },
-    { id: '4', text: 'Learn HTML Advance', completed: true },
-    { id: '5', text: 'Medical App UI', completed: false },
-    { id: '6', text: 'Learn Java', completed: true },
-  ]);
-
-  const renderTask = ({ item }) => (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: '#ecf0f1',
-        padding: 15,
-        borderRadius: 10,
-        marginBottom: 10,
-      }}>
-      <CheckBox
-        checked={item.completed}
-        onPress={() => toggleTaskCompletion(item.id)}
-      />
-      <Text style={{ flex: 1, marginLeft: 10 }}>{item.text}</Text>
-      <TouchableOpacity>
-        <Icon name="edit" type="feather" color="#E74C3C" />
-      </TouchableOpacity>
-    </View>
-  );
-
-  const toggleTaskCompletion = (id) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
-  };
-
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Screen1">
+      <Stack.Navigator initialRouteName="Screen2">
         <Stack.Screen name="Screen1" component={Screen1} />
         <Stack.Screen name="Screen2" component={Screen2} />
         <Stack.Screen name="Screen3" component={Screen3} />
